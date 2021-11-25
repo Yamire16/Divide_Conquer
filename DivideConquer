@@ -1,0 +1,92 @@
+#include <iostream>
+using namespace std;
+int number_max(int a[], int in, int sf) { // in - begin, sf - end
+    if(in == sf) 
+        if(a[in] % 2 != 0) return a[in]; 
+        else return INT_MIN;
+    else {
+        int mid = (in + sf) / 2;
+        int b = number_max(a, mid, in); 
+        int c = number_max(a, sf, mid + 1);
+        if(b < c) return c; 
+        else return b;
+    }
+}
+int prime_elements(int a[],int in, int sf)
+{   int prime =0;
+     if(in == sf) {
+       if(a[in] < 2) return 0;
+        for(int i = 2; i <= a[in] / 2; i++)
+            if(a[in] % i == 0)prime++;
+        if(prime == 0) return 1;
+        else return 0;
+     }
+    else
+    {   
+        int mij = (in + sf) / 2; // mij - middle
+        return prime_elements(a,in,mij) + prime_elements(a,mij+1,sf);
+    }
+}
+int odd_sum(int a[],int in,int sf)
+{
+     if(in == sf)
+        if(((a[in] % 2) != 0) && ((in % 2) == 0)) return a[in];
+        else return 0;
+    else
+    {   
+        int mij = (in + sf) / 2;
+        return odd_sum(a,in,mij) + odd_sum(a,mij+1,sf);
+    }
+}
+int odd_number(int a[],int in, int sf)
+{
+      if(in == sf)
+        return a[in] % 2 != 0;
+    else
+    {   
+        int mij = (in + sf) / 2;
+        return odd_number(a,in,mij) + odd_number(a,mij+1,sf);
+    }
+}
+int div3(int a[],int in,int sf)
+{   
+    if(in == sf)
+        return a[in] % 3 == 0;
+    else
+    {   
+        int mij = (in + sf) / 2;
+        return div3(a,in,mij) + div3(a,mij+1,sf);
+    }
+}
+
+int conquer(int a[],int in,int sf)
+{
+    if(in == sf)
+        if(in % 2 != 0) return a[in];
+        else return 0;
+    else
+    {   
+        int mij = (in + sf) / 2;
+        return conquer(a,in,mij) + conquer(a,mij+1,sf);
+    }
+}
+int main()
+{
+    int n; cin>>n;
+    int v[n];
+    for(int i =0 ; i<n;i++)
+        cin>>v[i];
+  cout<<"Sum of even elements ->"<<conquer(v,0,n-1); cout<<endl;
+    if(div3(v,0,n-1) == n) cout<<"All numbers are divisible by 3"<<endl;
+    else cout<<"Not all numbers are divisible by 3"<<endl;
+   if(odd_number(v,0,n-1) == n) cout<<"All numbers are odd"<<endl;
+   else cout<<"Not all numbers are odd"<<endl;
+   cout<<"Sum of even numbers on odd indexes ->"<<odd_sum(v,0,n-1)<<endl;
+   cout<<"The number of prime numbers ->"<<prime_elements(v,0,n-1)<<endl;
+   cout<<"Max between odd numbers ->"<<number_max(v,0,n-1)<<endl;
+}
+
+//just for mentioning again
+//in - begin 
+//sf - end
+//mid/mij - middle
